@@ -10,11 +10,22 @@
   </head>
   <body>
   	<script src="js/three.js"></script>
+  	<script src="js/controls/OrbitControls.js"></script>
   	<script>
   		var scene = new THREE.Scene();
   		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
   		var renderer = new THREE.WebGLRenderer();
   		renderer.setSize(window.innerWidth, window.innerHeight);
+
+		/****Camera Rotation Script****/
+  		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		//controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.25;
+		controls.enableZoom = false;
+  		/******************************/
+
   		document.body.appendChild(renderer.domElement);
   		var geometry = new THREE.BoxGeometry(1,1,1);
   		var material = new THREE.MeshNormalMaterial( {
@@ -41,6 +52,18 @@
   		cube3.position.y = 2;
   		cube4.position.y = -2;
 
+  		/*controls = new THREE.TrackballControls( camera );
+		controls.target.set( 0, 0, 0 );*/
+		/*Window Resize function*/
+		function onWindowResize() {
+
+			camera.aspect = window.innerWidth / window.innerHeight;
+			camera.updateProjectionMatrix();
+
+			renderer.setSize( window.innerWidth, window.innerHeight );
+
+		}
+
   		function render() {
   			requestAnimationFrame( render);
   			cube.rotation.x += 0.01;
@@ -59,6 +82,7 @@
   			centerCube.rotation.y += 0.02;
   			renderer.render(scene, camera);
   			/*renderer.setSize(window.innerWidth, window.innerHeight);*/
+  			camera.lookAt( scene.position );
   		}
   		render();
   	</script>
