@@ -27,33 +27,43 @@
   		/******************************/
 
   		document.body.appendChild(renderer.domElement);
+  		/*Define geometry and material for cube rendering*/
   		var geometry = new THREE.BoxGeometry(1,1,1);
+  		var centerCubeGeometry = new THREE.BoxGeometry(5,5,5);
+
   		var material = new THREE.MeshNormalMaterial( {
   			//color: 0x0054a6,
   			shading: THREE.SmoothShading,
+  			//wireframe: true
+  		});
+
+  		var centerCubeMaterial = new THREE.MeshNormalMaterial( {
+  			shading: THREE.SmoothShading,
   			wireframe: true
   		});
+
   		var cube = new THREE.Mesh(geometry, material);
   		var cube2 = new THREE.Mesh(geometry, material);
   		var cube3 = new THREE.Mesh(geometry, material);
   		var cube4 = new THREE.Mesh(geometry, material);
-  		var centerCube = new THREE.Mesh(geometry, material);
+  		var centerCube = new THREE.Mesh(centerCubeGeometry, centerCubeMaterial);
 
   		scene.add(cube);
-  		scene.add(cube2);
+  		//scene.add(cube2);
   		scene.add(cube3);
   		scene.add(cube4);
   		scene.add(centerCube);
 
-  		camera.position.z = 5;
+  		camera.position.z = 6;
 
-  		cube.position.x = 2;
-  		cube2.position.x = -2;
-  		cube3.position.y = 2;
-  		cube4.position.y = -2;
+  		cube.position.x = 1;
+  		cube2.position.x = -1;
+  		cube3.position.y = 1;
+  		cube4.position.y = -1;
 
   		/*controls = new THREE.TrackballControls( camera );
 		controls.target.set( 0, 0, 0 );*/
+		window.addEventListener( 'resize', onWindowResize, false );
 		/*Window Resize function*/
 		function onWindowResize() {
 
@@ -65,6 +75,8 @@
 		}
 
   		function render() {
+  			var r = Date.now() * 0.0005;
+
   			requestAnimationFrame( render);
   			cube.rotation.x += 0.01;
   			cube.rotation.y += 0.01;
@@ -78,8 +90,20 @@
   			cube4.rotation.x += 0.01;
   			cube4.rotation.y -= 0.01;
 
-  			centerCube.rotation.x += 0.02;
-  			centerCube.rotation.y += 0.02;
+  			cube.position.x = 1 * Math.cos( r );
+  			cube.position.y = 2 * Math.sin( r );
+
+  			/*cube2.position.x = 2 * Math.cos( r -6);
+  			cube2.position.y = 2 * Math.sin( r -6);*/
+
+  			cube3.position.x = 3 * Math.cos( r -8);
+  			cube3.position.y = 2 * Math.sin( r -8);
+
+  			cube4.position.x = 4 * Math.cos( r -4);
+  			cube4.position.y = 2 * Math.sin( r -4);
+
+  			//centerCube.rotation.x += 0.001;
+  			//centerCube.rotation.y += 0.001;
   			renderer.render(scene, camera);
   			/*renderer.setSize(window.innerWidth, window.innerHeight);*/
   			camera.lookAt( scene.position );
