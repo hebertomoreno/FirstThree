@@ -4,7 +4,10 @@
   	<meta charset=utf-8>
   	<title> My first Three.js app</title>
   	<style>
-  		body { margin: 0; }
+  		body { 	margin: 0; 
+  				background: #0054A6;
+  				overflow:hidden;
+  				}
   		canvas { width:100%; height:100%; }
   	</style>
   </head>
@@ -16,7 +19,19 @@
   		var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
   		var renderer = new THREE.WebGLRenderer();
+  		renderer.setClearColor( 0xffffff, 0);
   		renderer.setSize(window.innerWidth, window.innerHeight);
+  		var texture = new THREE.TextureLoader().load( 'textures/log.png' );
+
+  		/*Light */
+  		scene.add( new THREE.AmbientLight( 0x222222 ) );
+
+		var light = new THREE.PointLight( 0xffffff );
+		light.position.copy( camera.position );
+		scene.add( light );
+  		/********/
+
+  		scene.background = new THREE.Color( 0xffffff );
 
 		/****Camera Rotation Script****/
   		controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -31,9 +46,10 @@
   		var geometry = new THREE.BoxGeometry(1,1,1);
   		var centerCubeGeometry = new THREE.BoxGeometry(5,5,5);
 
-  		var material = new THREE.MeshNormalMaterial( {
+  		var material = new THREE.MeshBasicMaterial( {
   			//color: 0x0054a6,
-  			shading: THREE.SmoothShading,
+  			//shading: THREE.SmoothShading,
+  			map: texture 
   			//wireframe: true
   		});
 
@@ -52,7 +68,7 @@
   		//scene.add(cube2);
   		scene.add(cube3);
   		scene.add(cube4);
-  		scene.add(centerCube);
+  		//scene.add(centerCube);
 
   		camera.position.z = 6;
 
@@ -75,7 +91,7 @@
 		}
 
   		function render() {
-  			var r = Date.now() * 0.0005;
+  			var r = Date.now() * 0.0015;
 
   			requestAnimationFrame( render);
   			cube.rotation.x += 0.01;
